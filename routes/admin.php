@@ -12,7 +12,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group(['middleware' => 'auth:admin'], function () {
+    Route::get('/', 'DashboardController@index')->name('admin.dashboard');
+});
 
-Route::get('/admin', function () {
-    return view('layouts.admin');
+
+Route::group([ 'middleware' => 'guest:admin'], function () {
+    Route::get('login', 'LoginController@getLogin')->name('get.admin.login');
+    Route::post('login', 'LoginController@Login')->name('admin.login');
 });
