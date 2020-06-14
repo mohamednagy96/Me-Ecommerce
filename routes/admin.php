@@ -20,9 +20,11 @@ Route::group(['middleware' => 'auth:admin'], function () {
      * language
      */
     Route::resource('languages','LanguageController');
-    // Route::group(['prefix' =>'languages'],function(){
-    //     // Route::get('/','LanguageController');
-    // });
+    /**
+     * Main Catrogies
+     */
+    Route::resource('main_categories','MainCategoryController');
+   
 });
 
 

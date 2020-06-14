@@ -9,6 +9,11 @@ class Language extends Model
     protected $fillable =[ 'name','abbr','locale','direction','active'];
 
     protected $cast=['active'=>'boolean'];
+  
+    public function scopeActive($query){
+        return $query->where('active',1);
+    }
+
     public function scopeSelection($query){
         return $query->select('abbr','name','direction','active');
     }
