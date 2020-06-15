@@ -41,7 +41,8 @@ class MainCategoryController extends Controller
      */
     public function store(MainCategoryRequest $request)
     {
-        
+        // dd('ss');
+        return $request->all();
     }
 
     /**

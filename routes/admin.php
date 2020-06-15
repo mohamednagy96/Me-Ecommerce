@@ -32,3 +32,7 @@ Route::group([ 'middleware' => 'guest:admin'], function () {
     Route::get('login', 'LoginController@getLogin')->name('get.login');
     Route::post('login', 'LoginController@Login')->name('login');
 });
+
+route::get('test',function(){
+    return get_langauges();
+});

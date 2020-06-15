@@ -51,51 +51,61 @@
                                                 <input type="file" id="file" name="photo">
                                                 <span class="file-custom"></span>
                                             </label>
-                                             <span class="text-danger"> </span>
+                                            @error('photo')
+                                             <span class="text-danger">{{$message}} </span>
+                                             @enderror
                                          </div>
 
                                         <div class="form-body">
                                             <h4 class="form-section"><i class="ft-home"></i> بيانات  القسم </h4>
-
+                                            @if(get_languages()->count() > 0)
+                                                @foreach(get_languages() as $index => $lang)
+                                                {{-- {{dd($lang)}} --}}
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="projectinput1"> اسم القسم </label>
+                                                        <label for="projectinput1"> اسم القسم {{__('messages.'.$lang->abbr)}}</label>
                                                         <input type="text" value="" id="name"
                                                                class="form-control"
-                                                               placeholder="ادخل اسم القسم  "
-                                                               name="name">
-                                                         <span class="text-danger"></span>
+                                                               {{-- placeholder="ادخل اسم القسم  " --}}
+                                                               name="category[{{$index}}][name]">
+                                                            @error("category.$index.name")
+                                                            <span class="text-danger">هذا الحقل مطلوب</span>
+                                                            @enderror
                                                      </div>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="projectinput1"> أختصار اللغة </label>
+                                                        <label for="projectinput1"> أختصار اللغة {{__('messages.'.$lang->abbr)}}</label>
                                                         <input type="text" value="" id="name"
                                                                class="form-control"
-                                                               placeholder="ادخل أختصار اللغة  "
-                                                               name="abbr">
-                                                         <span class="text-danger"> </span>
+                                                               {{-- placeholder="ادخل أختصار اللغة  " --}}
+                                                               name="category[{{$index}}][abbr]">
+                                                      
+                                                            @error("category.$index.abbr")
+                                                            <span class="text-danger">هذا الحقل مطلوب</span>
+                                                            @enderror
                                                      </div>
                                                 </div>
                                             </div>
-
-
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group mt-1">
-                                                        <input type="checkbox"  value="1" name="active"
+                                                        <input type="checkbox"  value="1" name="category[{{$index}}][active]"
                                                                id="switcheryColor4"
                                                                class="switchery" data-color="success"
                                                                checked/>
                                                         <label for="switcheryColor4"
-                                                               class="card-title ml-1">الحالة </label>
-
-                                                        <span class="text-danger"></span>
+                                                               class="card-title ml-1"> الحالة {{__('messages.'.$lang->abbr)}}</label>
+                                                               @error("category.$index.active")
+                                                               <span class="text-danger">>هذا الحقل مطلوب </span>
+                                                               @enderror
                                                     </div>
                                                 </div>
                                             </div>
+                                                @endforeach
+                                            @endif
                                         </div>
 
 
