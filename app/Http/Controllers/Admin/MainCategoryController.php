@@ -41,8 +41,49 @@ class MainCategoryController extends Controller
      */
     public function store(MainCategoryRequest $request)
     {
+        $filePath="";
+        if($request->has('photo')){
+                $filePath=uploadImage('maincategories',$request->photo);
+        }
         // dd('ss');
-        return $request->all();
+        // return $request->all();
+        $main_category=collect($request->category);
+        $filter=$main_category->filter(function($item,$key){
+        //to get first item to save it in database by default language in website
+            return $item['abbr'] == get_defualt_lang();
+        });
+        // $default_category = array_values($filter->all()) [0];
+         $default_category = $filter->first();
+   
+         //to get id after make store
+         $defualt_cat_id=MainCategory::insertGetId([
+            'translation_lang'=>$default_category['abbr'],
+            'translation_of'=>0,
+            'name'=>$default_category['name'],
+            'slug'=>$default_category['name'],
+            'photo'=>$filePath,
+        ]);
+
+            //to get all categories that equal the same product but it is deffernet in language (not arabic)
+         $categories=$main_category->filter(function($item,$key){
+            //to get first item to save it in database by default language in website
+            // dd(get_defualt_lang()); 
+            return $item['abbr'] != get_defualt_lang();
+            });
+            if(isset($categories) && $categories->count())
+            $categories_arr=[];
+              foreach($categories as $category){
+                  $categories_arr[]=[
+                      'translation_lang'=>$category['abbr'],
+                      'translation_of'=>$defualt_cat_id,
+                    'name'=>$category['name'],
+                    'slug'=>$category['name'],
+                    'photo'=>$filePath,
+                  ];
+                }
+            MainCategory::insert($categories_arr);
+            return 'succes';
+
     }
 
     /**
