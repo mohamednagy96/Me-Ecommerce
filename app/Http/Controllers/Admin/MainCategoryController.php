@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\MainCategoryRequest;
 use App\Models\MainCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class MainCategoryController extends Controller
 {
@@ -41,6 +42,7 @@ class MainCategoryController extends Controller
      */
     public function store(MainCategoryRequest $request)
     {
+    try{
         $filePath="";
         if($request->has('photo')){
                 $filePath=uploadImage('maincategories',$request->photo);
@@ -55,6 +57,8 @@ class MainCategoryController extends Controller
         // $default_category = array_values($filter->all()) [0];
          $default_category = $filter->first();
    
+
+    DB::beginTransaction();
          //to get id after make store
          $defualt_cat_id=MainCategory::insertGetId([
             'translation_lang'=>$default_category['abbr'],
@@ -82,7 +86,10 @@ class MainCategoryController extends Controller
                   ];
                 }
             MainCategory::insert($categories_arr);
-            return 'succes';
+    DB::commit();
+    }catch(\Exception $ex){
+        DB::rollBack();
+    }
 
     }
 
